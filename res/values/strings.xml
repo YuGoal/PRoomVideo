@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">凶宅冒险</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_timer">凶宅冒险</string>
+    <string name="title_activity_video">凶宅冒险</string>
+    <color name="remain_time">#FF0000</color>
+
+</resources>
