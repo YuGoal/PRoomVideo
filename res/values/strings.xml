@@ -6,6 +6,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_timer">凶宅冒险</string>
     <string name="title_activity_video">凶宅冒险</string>
+
     <color name="remain_time">#FF0000</color>
+
+    <string name="title_activity_nfctest">NFCTestActivity</string>
 
 </resources>

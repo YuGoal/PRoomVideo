@@ -26,4 +26,14 @@
         android:text="探险开始"
         android:textSize="50sp" />
 
+    <Button
+        android:id="@+id/bt_nfctest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/bt_start"
+        android:layout_below="@+id/bt_start"
+        android:layout_marginTop="28dp"
+        android:text="NFC测试"
+        android:textSize="50sp" />
+
 </RelativeLayout>

@@ -62,6 +62,17 @@ public class MainActivity extends Activity {
 				MainActivity.this.startActivity(intent);
 			}
 		});
+		
+		
+		Button bt_nfctest = (Button) findViewById(R.id.bt_nfctest);
+		bt_nfctest.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(MainActivity.this,NFCTestActivity.class);
+				MainActivity.this.startActivity(intent);
+			}
+		});
+//		
 	}
 
 	@Override
@@ -86,8 +97,8 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onAttachedToWindow() {
-//		super.onAttachedToWindow();
-		this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
+		super.onAttachedToWindow();
+//		this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
 	}
 
 	@Override
