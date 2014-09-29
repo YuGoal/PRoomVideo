@@ -28,6 +28,7 @@ public class NFCDataUtils {
 				// MIFARE Ultralight C Tag 结构 每页4个字节,前4页是厂商系统等信息,每次读4页
 				StringBuffer sb = new StringBuffer();
 				for (int i = 0; i < 44; i += MifareUltralight.PAGE_SIZE) {
+//					String p = (String) ((i<10) ? "0"+i:i);
 					sb.append("page ").append(i).append(":")
 							.append(bytesToHexString(tt.readPages(i)))
 							.append("\n");
