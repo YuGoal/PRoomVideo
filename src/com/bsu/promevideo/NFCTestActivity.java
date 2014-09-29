@@ -55,19 +55,13 @@ public class NFCTestActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		if (mAdapter != null)
-			mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters,
-					mTechLists);
+			mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters,mTechLists);
 	}
 
 	@Override
 	public void onNewIntent(Intent intent) {
-		// onResume gets called after this to handle the intent
-//		setIntent(intent);
 		//获得个新意图后执行如下操作
 		mText.setText("Discovered tag "+ ++mCount + " with intent:"+intent);
-		//读取数据
-//		System.out.println(NfcAdapter.ACTION_TAG_DISCOVERED);
-//		System.out.println(intent.toString());
 		//获得intent里的内容
 		if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
 			NdefMessage[] msgs = getNdefMessages(intent);
@@ -78,6 +72,7 @@ public class NFCTestActivity extends Activity {
 		}
 	}
 
+	//当action为ACTION_NDEF_DISCOVERED时获得ndef信息
 	private NdefMessage[] getNdefMessages(Intent intent){
 		NdefMessage[] msgs = null;
 		String action = intent.getAction();
