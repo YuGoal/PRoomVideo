@@ -1,19 +1,12 @@
 package com.bsu.promevideo;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
+import com.bsu.promevideo.tools.NFCDataUtils;
 
-import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
-import android.nfc.tech.Ndef;
-import android.nfc.tech.NdefFormatable;
-import android.nfc.tech.NfcA;
-import android.nfc.tech.NfcV;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -89,24 +82,17 @@ public class NFCTestActivity extends Activity {
 			// 智能标签: TAG: Tech [android.nfc.tech.MifareUltralight,android.nfc.tech.NfcA, android.nfc.tech.Ndef]
 			// 扣: TAG: Tech [android.nfc.tech.MifareClassic,android.nfc.tech.NfcA, android.nfc.tech.NdefFormatable]
 
-			String str = readTag(tag);
-			System.out.println(str);
+//			String str = readTag(tag);
+//			System.out.println(str);
 			
 			
 			// NdefFormatable ndef = NdefFormatable.get(tag);
 			// Ndef ndef = Ndef.get(tag);
 			// NfcA ndef = NfcA.get(tag);
 			// MifareClassic tech = MifareClassic.get(tag);
-			MifareUltralight tech = MifareUltralight.get(tag);
-
-//			try {
-//				tech.connect();
-//				byte[] nm = tech.readPages(0);
-//				tag.toString();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-
+//			MifareUltralight tech = MifareUltralight.get(tag);
+			String nfcdata = NFCDataUtils.readMifareUltralightData(tag);
+			mText.setText(nfcdata);
 		}
 	}
 
