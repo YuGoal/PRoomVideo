@@ -78,6 +78,14 @@ public class NFCDataUtils {
 		}
 	}
 	
+	public static void readNdefData(Tag tag){
+		
+	}
+	
+	public static void writeNdefData(){
+		
+	}
+	
 	/**
 	 * 字符序列转换为16进制字符串形式,便于阅读
 	 * @param src	字符串数组
