@@ -1,12 +1,16 @@
 package com.bsu.promevideo;
 
+import java.io.IOException;
+
 import com.bsu.promevideo.tools.NFCDataUtils;
 
+import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareUltralight;
+import android.nfc.tech.Ndef;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -25,7 +29,7 @@ public class NFCTestActivity extends Activity {
 	private PendingIntent mPendingIntent;
 	private IntentFilter[] mFilters;
 	private String[][] mTechLists;
-	private TextView mText;
+	private TextView mText,tv_actiontype,tv_tagtype;
 	private int mCount = 0;
 
 	@Override
@@ -33,6 +37,9 @@ public class NFCTestActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nfctest);
 
+		tv_actiontype = (TextView)findViewById(R.id.tv_actiontype);
+		tv_tagtype = (TextView)findViewById(R.id.tv_tagtype);
+		
 		mText = (TextView) findViewById(R.id.txtBeam);
 		mText.setText("Scan a tag");
 
@@ -63,11 +70,13 @@ public class NFCTestActivity extends Activity {
 
 	@Override
 	public void onNewIntent(Intent intent) {
-
-		// onResume gets called after this to handle the intent
-		// setIntent(intent);
+		// 701: TAG: Tech [android.nfc.tech.MifareClassic,android.nfc.tech.NfcA, android.nfc.tech.NdefFormatable]
+		// 智能标签: TAG: Tech [android.nfc.tech.MifareUltralight,android.nfc.tech.NfcA, android.nfc.tech.Ndef]
+		// 扣: TAG: Tech [android.nfc.tech.MifareClassic,android.nfc.tech.NfcA, android.nfc.tech.NdefFormatable]
+		
 		// 获得个新意图后执行如下操作
 		mText.setText("Discovered tag " + ++mCount + " with intent:" + intent);
+		tv_actiontype.setText(NFCDataUtils.simpleActionType(intent.getAction().toString()));
 		// 读取数据
 		// 获得intent里的内容
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
@@ -75,24 +84,18 @@ public class NFCTestActivity extends Activity {
 			String body = new String(msgs[0].getRecords()[0].getPayload());
 			mText.setText(body);
 		} else if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
-			Parcelable[] resMsgs = intent
-					.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES); // 获得Ndef消息
-			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG); // 获得标签支持的技术
-			// 701: TAG: Tech [android.nfc.tech.MifareClassic,android.nfc.tech.NfcA, android.nfc.tech.NdefFormatable]
-			// 智能标签: TAG: Tech [android.nfc.tech.MifareUltralight,android.nfc.tech.NfcA, android.nfc.tech.Ndef]
-			// 扣: TAG: Tech [android.nfc.tech.MifareClassic,android.nfc.tech.NfcA, android.nfc.tech.NdefFormatable]
-
-//			String str = readTag(tag);
-//			System.out.println(str);
+//			Parcelable[] resMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES); 	// 获得Ndef消息
+			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG); 								// 获得标签支持的技术
+			tv_tagtype.setText(NFCDataUtils.getTechList2String(tag));
 			
-			
-			// NdefFormatable ndef = NdefFormatable.get(tag);
-			// Ndef ndef = Ndef.get(tag);
-			// NfcA ndef = NfcA.get(tag);
-			// MifareClassic tech = MifareClassic.get(tag);
-//			MifareUltralight tech = MifareUltralight.get(tag);
-			String nfcdata = NFCDataUtils.readMifareUltralightData(tag);
-			mText.setText(nfcdata);
+			String tagtype = NFCDataUtils.witchMifareType(tag);
+			if(tagtype.equals("MifareClassic")){
+				mText.setText(NFCDataUtils.readMifareClassicData(tag));	
+			}else if(tagtype.equals("MifareUltralight")){
+				mText.setText(NFCDataUtils.readMifareUltralightData(tag));
+			}else{
+				
+			}
 		}
 	}
 
