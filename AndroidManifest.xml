@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.bsu.promevideo.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -26,17 +26,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bsu.promevideo.TimerActivity"
+            android:name=".TimerActivity"
             android:label="@string/title_activity_timer"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.bsu.promevideo.VideoActivity"
+            android:name=".VideoActivity"
             android:label="@string/title_activity_video" >
         </activity>
         <activity
-            android:name="com.bsu.promevideo.NFCTestActivity"
+            android:name=".NFCTestActivity"
             android:label="@string/title_activity_nfctest" >
+        </activity>
+        <activity
+            android:name=".NFCWriteActivity"
+            android:label="@string/title_activity_nfcwrite" >
         </activity>
     </application>
 

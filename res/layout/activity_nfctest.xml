@@ -11,9 +11,10 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/bt_write"
+        android:layout_centerHorizontal="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,8 +28,52 @@
                 android:layout_marginLeft="14dp"
                 android:text="TextView"
                 android:textSize="10sp" />
-
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/tvt_actiontype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scrollView1"
+        android:layout_alignParentTop="true"
+        android:text="ActionType:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tv_actiontype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvt_actiontype"
+        android:layout_alignTop="@+id/tvt_actiontype"
+        android:layout_toRightOf="@+id/tvt_actiontype"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tvt_tagtype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/tvt_actiontype"
+        android:layout_below="@+id/tv_actiontype"
+        android:text="TagType:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tv_tagtype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvt_tagtype"
+        android:layout_alignLeft="@+id/tv_actiontype"
+        android:layout_below="@+id/tv_actiontype"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/bt_write"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/scrollView1"
+        android:layout_below="@+id/tv_tagtype"
+        android:text="写入数据" />
 
 </RelativeLayout>

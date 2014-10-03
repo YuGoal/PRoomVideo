@@ -10,5 +10,6 @@
     <color name="remain_time">#FF0000</color>
 
     <string name="title_activity_nfctest">NFCTestActivity</string>
+    <string name="title_activity_nfcwrite">NFCWriteActivity</string>
 
 </resources>

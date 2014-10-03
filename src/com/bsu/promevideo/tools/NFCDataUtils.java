@@ -1,5 +1,7 @@
 package com.bsu.promevideo.tools;
 
+import java.io.IOException;
+
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
@@ -54,20 +56,29 @@ public class NFCDataUtils {
 	 * @param tag			tag对象
 	 * @param pageIndex		要写入的页码索引,一般从4(第5页)开始写,前4页是系统信息
 	 * @param data			要写入的数据,由于每页只包括个字节,所以data的长度只能是长度为4的byte数组
+	 * @throws Exception 
 	 */
-	public static void writeMifareUltralightData(Tag tag,int pageIndex,byte[] data){
+	public static void writeMifareUltralightData(Tag tag,int pageIndex,byte[] data) throws Exception{
 		MifareUltralight tt = MifareUltralight.get(tag);
 		try {
 			tt.connect();
 			// 判断是否为MifareUltralight C数据
 			if (tt.getType() == MifareUltralight.TYPE_ULTRALIGHT_C) {
-				// 写入数据,一次只能写1页4个字节				
-				tt.writePage(pageIndex, data);
+				// 写入数据,一次只能写1页4个字节
+				int wc = data.length/4;						//一次写入4个字节，判断要写几次
+				for(int i=0;i<wc;i++){
+					byte[] wb = new byte[4];
+					System.arraycopy(data, i*4, wb, 0, 4);		//取源数组的4个字节拷贝到要写入的数组中
+					try {
+						tt.writePage((i+pageIndex), wb);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			} else if (tt.getType() == MifareUltralight.TYPE_ULTRALIGHT) {
 			} else {
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			try {
 				tt.close();

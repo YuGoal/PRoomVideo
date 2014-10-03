@@ -20,6 +20,9 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -30,6 +33,7 @@ public class NFCTestActivity extends Activity {
 	private IntentFilter[] mFilters;
 	private String[][] mTechLists;
 	private TextView mText,tv_actiontype,tv_tagtype;
+	private Button bt_write;
 	private int mCount = 0;
 
 	@Override
@@ -37,8 +41,16 @@ public class NFCTestActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nfctest);
 
-		tv_actiontype = (TextView)findViewById(R.id.tv_actiontype);
-		tv_tagtype = (TextView)findViewById(R.id.tv_tagtype);
+		tv_actiontype = (TextView)findViewById(R.id.tv_actiontype);	//action类型
+		tv_tagtype = (TextView)findViewById(R.id.tv_tagtype);		//tag类型
+		
+		bt_write = (Button) findViewById(R.id.bt_write);
+		bt_write.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(NFCTestActivity.this,NFCWriteActivity.class);
+				NFCTestActivity.this.startActivity(intent);
+			}});
 		
 		mText = (TextView) findViewById(R.id.txtBeam);
 		mText.setText("Scan a tag");
@@ -234,95 +246,4 @@ public class NFCTestActivity extends Activity {
 	// return super.onOptionsItemSelected(item);
 	// }
 	// }
-	//
-	// // 字符序列转换为16进制字符串
-	/**
-	 * 字符序列转换为16进制字符串
-	 * 
-	 * @param src
-	 * @return
-	 */
-	private String bytesToHexString(byte[] src) {
-		StringBuilder stringBuilder = new StringBuilder("0x");
-		if (src == null || src.length <= 0) {
-			return null;
-		}
-		char[] buffer = new char[2];
-		for (int i = 0; i < src.length; i++) {
-			buffer[0] = Character.forDigit((src[i] >>> 4) & 0x0F, 16);
-			buffer[1] = Character.forDigit(src[i] & 0x0F, 16);
-//			System.out.println(buffer);
-			stringBuilder.append(buffer);
-		}
-		return stringBuilder.toString();
-	}
-
-	/**
-	 * 读取ndef数据
-	 */
-	private void readNFCTag() {
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-			Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(
-					NfcAdapter.EXTRA_NDEF_MESSAGES);
-			NdefMessage msgs[] = null;
-			int contentSize = 0;
-			if (rawMsgs != null) {
-				msgs = new NdefMessage[rawMsgs.length];
-				for (int i = 0; i < rawMsgs.length; i++) {
-					msgs[i] = (NdefMessage) rawMsgs[i];
-					contentSize += msgs[i].toByteArray().length;
-				}
-			}
-			try {
-				if (msgs != null) {
-					NdefRecord record = msgs[0].getRecords()[0];
-					// TextRecord textRecord = TextRecord.parse(record);
-					// mTagText += textRecord.getText() + "\n\ntext\n"
-					// + contentSize + " bytes";
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-	}
-	
-	/**
-	 * 读取MifareUltralight数据
-	 * @param tag
-	 * @return
-	 */
-	public String readTag(Tag tag) {
-		MifareUltralight ultralight = MifareUltralight.get(tag);
-
-		try {
-			ultralight.connect();
-			// MIFARE Ultralight C Tag 结构 每页4个字节,前4页是厂商信息,每次读4页
-			String str = "";
-			for(int i=0;i<44;i+=4){
-				str+="page "+i+":";
-				str+=bytesToHexString(ultralight.readPages(i))+"\n";
-			}
-			System.out.println(ultralight.getType());
-			//写入数据,一次只能写1页4个字节
-			ultralight.writePage(9, new byte[]{1,1,1,1});
-			
-			return str;
-//			byte[] data = ultralight.readPages(5);
-//			return new String(datas, Charset.forName("GB2312"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				ultralight.close();
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-		return null;
-	}
-
-//	private void writeTag(){
-//		
-//	}
-	
 }
