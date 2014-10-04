@@ -11,5 +11,6 @@
 
     <string name="title_activity_nfctest">NFCTestActivity</string>
     <string name="title_activity_nfcwrite">NFCWriteActivity</string>
+    <string name="title_activity_timer2">Timer2Activity</string>
 
 </resources>

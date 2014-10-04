@@ -52,6 +52,42 @@ public class NFCDataUtils {
 		return null;
 	}
 	/**
+	 * 读取标签中的从startPage页到startPage页的数据
+	 * @param tag			标签对象
+	 * @param startPage		开始页
+	 * @return				返回startPage后4页的数据的字符串形式
+	 */
+	public static String readMifareUltralightDataByPage(Tag tag,int startPage){
+		if(startPage>44 || startPage<0)
+			return null;
+		MifareUltralight tt = MifareUltralight.get(tag);
+		try {
+			tt.connect();
+			// 判断是否为MifareUltralight C数据
+			if (tt.getType() == MifareUltralight.TYPE_ULTRALIGHT_C) {
+				// MIFARE Ultralight C Tag 结构 48页 每页4个字节,前4页是厂商系统等信息,最后4页用来验证身份不可读
+				// 读取数据时每次读4页
+				byte[] bytes = tt.readPages(startPage);
+				String s = new String(NFCDataUtils.deleteBytesZero(bytes));
+				return s;
+			} else if (tt.getType() == MifareUltralight.TYPE_ULTRALIGHT) {
+				return "";
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				tt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * 写入MifareUltralight数据
 	 * @param tag			tag对象
 	 * @param pageIndex		要写入的页码索引,一般从4(第5页)开始写,前4页是系统信息
@@ -64,11 +100,30 @@ public class NFCDataUtils {
 			tt.connect();
 			// 判断是否为MifareUltralight C数据
 			if (tt.getType() == MifareUltralight.TYPE_ULTRALIGHT_C) {
+				byte[] newbytes;
 				// 写入数据,一次只能写1页4个字节
 				int wc = data.length/4;						//一次写入4个字节，判断要写几次
+				//如果data的长度不能被4整除，后面要用0x00补位
+				int add = data.length%4;
+				if(add==0)
+					newbytes = data;
+				else{
+					//如果不能整除，要把写入数据多补1页
+					wc++;
+					//先初始化补位后的新数组长度
+					newbytes = new byte[data.length+add];
+					//为新数组赋值
+					for(int i=0;i<newbytes.length;i++){
+						if(i<data.length)
+							newbytes[i] = data[i];
+						else
+							newbytes[i] = 0x00;
+					}
+				}
+					
 				for(int i=0;i<wc;i++){
 					byte[] wb = new byte[4];
-					System.arraycopy(data, i*4, wb, 0, 4);		//取源数组的4个字节拷贝到要写入的数组中
+					System.arraycopy(newbytes, i*4, wb, 0, 4);		//取源数组的4个字节拷贝到要写入的数组中
 					try {
 						tt.writePage((i+pageIndex), wb);
 					} catch (IOException e) {
@@ -191,5 +246,22 @@ public class NFCDataUtils {
 				return simpleActionType(s);
 		}
 		return null;
+	}
+	/**
+	 * 截断字节数组后面的0
+	 * @param bytes	要处理的字节数组
+	 * @return		返回去掉0的字节数组
+	 */
+	public static byte[] deleteBytesZero(byte[] bytes){
+		int index = 0;
+		for(int i=bytes.length-1;i>=0;i--){
+			if(bytes[i]!=0)
+				break;
+			index++;
+		}
+		byte[] newbytes = new byte[bytes.length-index];
+		for(int i=0;i<bytes.length-index;i++)
+			newbytes[i] = bytes[i];
+		return newbytes;
 	}
 }

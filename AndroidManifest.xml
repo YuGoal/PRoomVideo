@@ -42,6 +42,10 @@
             android:name=".NFCWriteActivity"
             android:label="@string/title_activity_nfcwrite" >
         </activity>
+        <activity
+            android:name=".Timer2Activity"
+            android:label="@string/title_activity_timer2" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,16 +1,10 @@
 package com.bsu.promevideo;
 
-import java.io.IOException;
-
 import com.bsu.promevideo.tools.NFCDataUtils;
-
-import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.MifareUltralight;
-import android.nfc.tech.Ndef;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;

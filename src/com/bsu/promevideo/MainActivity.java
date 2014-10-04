@@ -57,8 +57,8 @@ public class MainActivity extends Activity {
 		bt_start.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this,
-						TimerActivity.class);
+//				Intent intent = new Intent(MainActivity.this,TimerActivity.class);
+				Intent intent = new Intent(MainActivity.this,Timer2Activity.class);
 				MainActivity.this.startActivity(intent);
 			}
 		});
