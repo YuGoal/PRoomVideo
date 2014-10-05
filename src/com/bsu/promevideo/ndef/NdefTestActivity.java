@@ -143,8 +143,8 @@ public class NdefTestActivity extends Activity {
 		}
 		// 创建NdefMessage对象
 		// NdefRecord.creatApplicationRecord方法创建一个封装Package的NdefRecord对象
-		NdefMessage ndefMessage = new NdefMessage(
-				new NdefRecord[] {createTextRecord("bk42-lr001"),  NdefRecord.createApplicationRecord("com.bsu.promevideo") });
+		NdefMessage ndefMessage = new NdefMessage(new NdefRecord[] {createTextRecord("bk42-lr001"),  NdefRecord.createApplicationRecord("com.bsu.promevideo") });
+//		NdefMessage ndefMessage = new NdefMessage(new NdefRecord[] {createTextRecord("bk42-lr001")});
 		// 获取NdefMessage对象的尺寸
 		int size = ndefMessage.toByteArray().length;
 

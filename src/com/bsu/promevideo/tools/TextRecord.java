@@ -22,12 +22,13 @@ public class TextRecord {
 	// 将纯文本内容从NdefRecord对象（payload）中解析出来
 	public static TextRecord parse(NdefRecord record) {
 		// 验证TNF是否为NdefRecord.TNF_WELL_KNOWN
-//		if (record.getTnf() != NdefRecord.TNF_WELL_KNOWN)
-		if (record.getTnf() == NdefRecord.TNF_WELL_KNOWN)
+		if (record.getTnf() != NdefRecord.TNF_WELL_KNOWN)
 			return null;
+//		if (record.getTnf() == NdefRecord.TNF_WELL_KNOWN)
+			
 		// 验证可变长度类型是否为RTD_TEXT
-//		if (!Arrays.equals(record.getType(), NdefRecord.RTD_TEXT))
-//			return null;
+		if (!Arrays.equals(record.getType(), NdefRecord.RTD_TEXT))
+			return null;
 
 		try {
 			// 获取payload
