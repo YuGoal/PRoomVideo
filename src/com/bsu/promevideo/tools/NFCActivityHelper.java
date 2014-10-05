@@ -52,7 +52,8 @@ public class NFCActivityHelper {
 	 */
 	public void onResume(){
 		if(adapter != null)
-			adapter.enableForegroundDispatch(context, pintent, filters, techLists);
+			adapter.enableForegroundDispatch(context, pintent, null, null);
+//			adapter.enableForegroundDispatch(context, pintent, filters, techLists);
 	}
 	/**
 	 * 用于在Activity中的onPause里的执行
@@ -87,7 +88,7 @@ public class NFCActivityHelper {
 					listener.read(NFCDataUtils.readMifareUltralightDataByPage(tag, 8));
 //					listener.read(NFCDataUtils.readMifareUltralightData(tag));
 			}
-			else{}
+
 		//当读到一个ACTION_NDEF_DISCOVERED数据
 		}else if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())){
 			

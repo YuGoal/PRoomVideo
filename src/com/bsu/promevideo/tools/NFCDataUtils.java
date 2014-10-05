@@ -1,10 +1,16 @@
 package com.bsu.promevideo.tools;
 
 import java.io.IOException;
+import java.util.Locale;
 
+import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
+import android.nfc.tech.NdefFormatable;
+import android.os.Parcelable;
 
 /**
  * nfc数据的工具类，可帮助开发者读写各种格式的nfc数据
@@ -182,12 +188,26 @@ public class NFCDataUtils {
 		return null;
 	}
 	
-	public static void writeMifareClassesData(){
+	public static void writeMifareClassesData(Tag tag){
+		NdefFormatable ndeff = NdefFormatable.get(tag);
+		Locale locale = Locale.US;
 		
 	}
-	
-	public static void readNdefData(Tag tag){
-		
+	/**
+	 * 读取ndef数据，未完成
+	 * @param intent	意图对象，通过意图对象获得数据
+	 * @return	
+	 */
+	public static String readNdefData(Intent intent){
+		NdefMessage[] msgs;
+		Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+		if(rawMsgs!=null){
+			msgs = new NdefMessage[rawMsgs.length];
+			for(int i=0;i<rawMsgs.length;i++){
+				msgs[i] = (NdefMessage)rawMsgs[i];
+			}
+		}
+		return "";
 	}
 	
 	public static void writeNdefData(){
@@ -247,6 +267,20 @@ public class NFCDataUtils {
 		}
 		return null;
 	}
+	/**
+	 * 判断标签为什么类型
+	 * @param tag	tag对象，从中判断标签的类型
+	 * @return		返回标签的字符串信息
+	 */
+	public static String witchTagType(Tag tag){
+		String[] tstrs = tag.getTechList();
+		for(String s:tstrs){
+			if(s.equals("android.nfc.tech.Ndef"))
+				return simpleActionType(s);
+		}
+		return null;
+	}
+	
 	/**
 	 * 截断字节数组后面的0
 	 * @param bytes	要处理的字节数组

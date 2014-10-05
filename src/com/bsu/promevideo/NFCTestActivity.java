@@ -93,7 +93,7 @@ public class NFCTestActivity extends Activity {
 //			Parcelable[] resMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES); 	// 获得Ndef消息
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG); 								// 获得标签支持的技术
 			tv_tagtype.setText(NFCDataUtils.getTechList2String(tag));
-			
+
 			String tagtype = NFCDataUtils.witchMifareType(tag);
 			if(tagtype.equals("MifareClassic")){
 				mText.setText(NFCDataUtils.readMifareClassicData(tag));	

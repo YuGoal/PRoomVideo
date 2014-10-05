@@ -1,5 +1,7 @@
 package com.bsu.promevideo;
 
+import com.bsu.promevideo.ndef.NdefTestActivity;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -69,6 +71,15 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(MainActivity.this,NFCTestActivity.class);
+				MainActivity.this.startActivity(intent);
+			}
+		}); 
+		
+		Button bt_ndeftest = (Button) findViewById(R.id.bt_ndeftest);
+		bt_ndeftest.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(MainActivity.this,NdefTestActivity.class);
 				MainActivity.this.startActivity(intent);
 			}
 		});
