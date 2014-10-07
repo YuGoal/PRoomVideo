@@ -8,20 +8,112 @@
         android:id="@+id/cb_iswrite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/tv_ndeftest"
-        android:layout_marginTop="14dp"
+        android:layout_marginLeft="10dp"
         android:text="是否写入" />
 
     <TextView
-        android:id="@+id/tv_ndeftest"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvt_readdata"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/cb_iswrite"
-        android:layout_marginTop="14dp"
-        android:text="Large Text"
+        android:layout_below="@+id/rl_writedata"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="读取数据"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <TextView
+        android:id="@+id/tv_readdata"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvt_readdata"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RelativeLayout
+        android:id="@+id/rl_writedata"
+        android:layout_width="fill_parent"
+        android:layout_height="130dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/cb_iswrite" >
+
+        <TextView
+            android:id="@+id/tv_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_page"
+            android:layout_alignBottom="@+id/et_page"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/et_page"
+            android:text="写入页:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/tv_writedata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_data"
+            android:layout_alignBottom="@+id/et_data"
+            android:layout_alignRight="@+id/tv_page"
+            android:text="写入数据:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <CheckBox
+            android:id="@+id/cb_cleardata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_writedata"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:text="清除当页数据" />
+
+        <EditText
+            android:id="@+id/et_aar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tv_aar"
+            android:layout_alignBottom="@+id/tv_aar"
+            android:layout_alignParentRight="true"
+            android:ems="10"
+            android:text="com.bsu." />
+
+        <EditText
+            android:id="@+id/et_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_page"
+            android:ems="10"
+            android:text="bk42-lr00" />
+
+        <EditText
+            android:id="@+id/et_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:inputType="number"
+            android:text="8" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/tv_aar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/cb_cleardata"
+            android:layout_alignRight="@+id/tv_writedata"
+            android:text="AAR:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
 </RelativeLayout>
- 

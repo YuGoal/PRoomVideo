@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">凶宅冒险</string>
+    <string name="app_name">标签测试程序</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_timer">凶宅冒险</string>
@@ -13,5 +13,6 @@
     <string name="title_activity_nfcwrite">NFCWriteActivity</string>
     <string name="title_activity_timer2">Timer2Activity</string>
     <string name="title_activity_ndef_test">NdefTestActivity</string>
+    <string name="title_activity_audio">AudioActivity</string>
 
 </resources>

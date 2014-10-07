@@ -32,23 +32,33 @@
         </activity>
         <activity
             android:name=".VideoActivity"
-            android:label="@string/title_activity_video" >
+            android:label="@string/title_activity_video" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".NFCTestActivity"
-            android:label="@string/title_activity_nfctest" >
+            android:label="@string/title_activity_nfctest" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".NFCWriteActivity"
-            android:label="@string/title_activity_nfcwrite" >
+            android:label="@string/title_activity_nfcwrite" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Timer2Activity"
-            android:label="@string/title_activity_timer2" >
+            android:label="@string/title_activity_timer2" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="com.bsu.promevideo.ndef.NdefTestActivity"
-            android:label="@string/title_activity_ndef_test" >
+            android:name=".ndef.NdefTestActivity"
+            android:label="@string/title_activity_ndef_test" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".AudioActivity"
+            android:label="@string/title_activity_audio" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -1,16 +1,21 @@
 package com.bsu.promevideo.tools;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
+import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Parcelable;
+import android.widget.Toast;
 
 /**
  * nfc数据的工具类，可帮助开发者读写各种格式的nfc数据
@@ -194,25 +199,147 @@ public class NFCDataUtils {
 		
 	}
 	/**
-	 * 读取ndef数据，未完成
+	 * 读取ndef数据
 	 * @param intent	意图对象，通过意图对象获得数据
 	 * @return	
 	 */
 	public static String readNdefData(Intent intent){
-		NdefMessage[] msgs;
-		Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-		if(rawMsgs!=null){
-			msgs = new NdefMessage[rawMsgs.length];
-			for(int i=0;i<rawMsgs.length;i++){
-				msgs[i] = (NdefMessage)rawMsgs[i];
+		String mTagText = "";
+
+		// 判断是否为ACTION_NDEF_DISCOVERED
+		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+			// 从标签读取数据（Parcelable对象）
+			Parcelable[] rawMsgs = intent
+					.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+
+			NdefMessage msgs[] = null;
+			int contentSize = 0;
+			if (rawMsgs != null) {
+				msgs = new NdefMessage[rawMsgs.length];
+				// 标签可能存储了多个NdefMessage对象，一般情况下只有一个NdefMessage对象
+				for (int i = 0; i < rawMsgs.length; i++) {
+					// 转换成NdefMessage对象
+					msgs[i] = (NdefMessage) rawMsgs[i];
+					// 计算数据的总长度
+					contentSize += msgs[i].toByteArray().length;
+				}
 			}
+			try {
+				if (msgs != null) {
+					// 程序中只考虑了1个NdefRecord对象，若是通用软件应该考虑所有的NdefRecord对象
+					NdefRecord record = msgs[0].getRecords()[0];
+					// 分析第1个NdefRecorder，并创建TextRecord对象
+					TextRecord textRecord = TextRecord.parse(record);
+					// 获取实际的数据占用的大小，并显示在窗口上
+					mTagText += textRecord.getText() + "\n\n纯文本\n"+ contentSize + " bytes";
+					System.out.println("==========="+mTagText);
+					return textRecord.getText();
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
 		}
-		return "";
+		return null;
+	}
+	/**
+	 * 	 * 写入ndef数据，可以不管写入数据的页，由ndef相关类自己控制
+	 * @param activity		前台的activity对象
+	 * @param tag			标签对象
+	 * @param writedata		要写入的数据
+	 * @param aarparam		为了保证标签能被转用程序识别，需要代入程序包名
+	 */
+	public static void writeNdefData(Activity activity,Tag tag,String writedata,String aarparam){
+		// 必须要指定一个Tag对象
+				if (tag == null) {
+					Toast.makeText(activity, "NFC Tag未建立连接", Toast.LENGTH_LONG).show();
+					return;
+				}
+				// 创建NdefMessage对象
+				// NdefRecord.creatApplicationRecord方法创建一个封装Package的NdefRecord对象
+				NdefMessage ndefMessage = new NdefMessage(new NdefRecord[] {createTextRecord(writedata),  NdefRecord.createApplicationRecord(aarparam) });
+//				NdefMessage ndefMessage = new NdefMessage(new NdefRecord[] {createTextRecord("bk42-lr001")});
+				// 获取NdefMessage对象的尺寸
+				int size = ndefMessage.toByteArray().length;
+
+				try {
+					// 获取Ndef对象
+					Ndef ndef = Ndef.get(tag);
+					// 处理NDEF格式的数据
+					if (ndef != null) {
+						// 允许对标签进行IO操作，连接
+						ndef.connect();
+						// NFC标签不是可写的（只读的）
+						if (!ndef.isWritable()) {
+							Toast.makeText(activity, "NFC Tag是只读的！", Toast.LENGTH_LONG)
+									.show();
+							return;
+						}
+						// NFC标签的空间不足
+						if (ndef.getMaxSize() < size) {
+							Toast.makeText(activity, "NFC Tag的空间不足！", Toast.LENGTH_LONG)
+									.show();
+							return;
+						}
+						// 向NFC标签写入数据
+						ndef.writeNdefMessage(ndefMessage);
+						Toast.makeText(activity, "已成功写入数据！", Toast.LENGTH_LONG).show();
+					} else {
+						// 创建NdefFormatable对象
+						NdefFormatable format = NdefFormatable.get(tag);
+						if (format != null) {
+							try {
+								// 允许标签IO操作，进行连接
+								format.connect();
+								// 重新格式化NFC标签，并写入数据
+								format.format(ndefMessage);
+								Toast.makeText(activity, "已成功写入数据！", Toast.LENGTH_LONG)
+										.show();
+							} catch (Exception e) {
+								Toast.makeText(activity, "写入NDEF格式数据失败！", Toast.LENGTH_LONG)
+										.show();
+							}
+						} else {
+							Toast.makeText(activity, "NFC标签不支持NDEF格式！", Toast.LENGTH_LONG)
+									.show();
+						}
+					}
+				} catch (Exception e) {
+					Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
+				}
 	}
 	
-	public static void writeNdefData(){
-		
-	}
+	/**
+	 * 创建一个封装要写入的文本的NdefRecord对象  
+	 * @param text	要写入的文本
+	 * @return		返回实现好的NdefRecord对象
+	 */
+    private static NdefRecord createTextRecord(String text) {  
+        //生成语言编码的字节数组，中文编码  
+        byte[] langBytes = Locale.CHINA.getLanguage().getBytes(  
+                Charset.forName("US-ASCII"));  
+        //将要写入的文本以UTF_8格式进行编码  
+        Charset utfEncoding = Charset.forName("UTF-8");  
+        //由于已经确定文本的格式编码为UTF_8，所以直接将payload的第1个字节的第7位设为0  
+        byte[] textBytes = text.getBytes(utfEncoding);  
+        int utfBit = 0;  
+        //定义和初始化状态字节  
+        char status = (char) (utfBit + langBytes.length);  
+        //创建存储payload的字节数组  
+        byte[] data = new byte[1 + langBytes.length + textBytes.length];  
+        //设置状态字节  
+        data[0] = (byte) status;  
+        //设置语言编码  
+        System.arraycopy(langBytes, 0, data, 1, langBytes.length);  
+        //设置实际要写入的文本  
+        System.arraycopy(textBytes, 0, data, 1 + langBytes.length,  
+                textBytes.length);  
+        //根据前面设置的payload创建NdefRecord对象  
+        NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,  
+                NdefRecord.RTD_TEXT, new byte[0], data);  
+        return record;  
+    }
 	
 	/**
 	 * 字符序列转换为16进制字符串形式,便于阅读
