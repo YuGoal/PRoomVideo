@@ -99,6 +99,9 @@ public class NFCTestActivity extends Activity {
 				mText.setText(NFCDataUtils.readMifareClassicData(tag));	
 			}else if(tagtype.equals("MifareUltralight")){
 				mText.setText(NFCDataUtils.readMifareUltralightData(tag));
+			}else if(tagtype.equals("NfcA")){
+//				mText.setText(NFCDataUtils.readMifareClassicData(tag));
+				mText.setText("NfcA数据，还未支持");
 			}else{
 				
 			}

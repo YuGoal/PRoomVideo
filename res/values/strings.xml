@@ -14,5 +14,6 @@
     <string name="title_activity_timer2">Timer2Activity</string>
     <string name="title_activity_ndef_test">NdefTestActivity</string>
     <string name="title_activity_audio">AudioActivity</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

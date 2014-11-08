@@ -35,10 +35,10 @@ import android.widget.Toast;
 public class NdefTestActivity extends Activity {
 	private NfcAdapter adapter;
 	private PendingIntent pintent;
-	private TextView tv_readdata ;				//读取到的数据
-	private TextView tv_page,tv_writedata;		//标签
-	private CheckBox cb_iswrite,cb_cleardata;	//是否写入数据和是否清除数据
-	private EditText et_page,et_data,et_aar;	//要写入数据的页，默认为第8页和要写入的数据
+	private TextView tv_readdata ;					//读取到的数据
+	private TextView tv_page,tv_writedata,tv_aar;	//标签
+	private CheckBox cb_iswrite,cb_cleardata;		//是否写入数据和是否清除数据
+	private EditText et_page,et_data,et_aar;		//要写入数据的页，默认为第8页和要写入的数据
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class NdefTestActivity extends Activity {
 		tv_readdata = (TextView) findViewById(R.id.tv_readdata);
 		tv_page = (TextView) findViewById(R.id.tv_page);
 		tv_writedata = (TextView) findViewById(R.id.tv_writedata);
+		tv_aar = (TextView) findViewById(R.id.tv_aar);
 		cb_iswrite = (CheckBox) findViewById(R.id.cb_iswrite);
 		cb_cleardata = (CheckBox) findViewById(R.id.cb_cleardata);
 		et_page = (EditText) findViewById(R.id.et_page);
@@ -115,6 +116,7 @@ public class NdefTestActivity extends Activity {
 	private void setWriteEnable(boolean b){
 		tv_page.setEnabled(b);
 		tv_writedata.setEnabled(b);
+		tv_aar.setEnabled(b);
 		cb_cleardata.setEnabled(b);
 		et_page.setEnabled(b);
 		et_data.setEnabled(b);

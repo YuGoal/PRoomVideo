@@ -387,9 +387,12 @@ public class NFCDataUtils {
 	public static String witchMifareType(Tag tag){
 		String[] tstrs = tag.getTechList();
 		for(String s:tstrs){
-			if(s.equals("android.nfc.tech.MifareClassic"))
+			if(s.equals("android.nfc.tech.MifareClassic") )
 				return simpleActionType(s);
 			else if(s.equals("android.nfc.tech.MifareUltralight"))
+				return simpleActionType(s);
+			else if(s.equals("android.nfc.tech.NfcA"))
+				System.out.println(simpleActionType(s));
 				return simpleActionType(s);
 		}
 		return null;
